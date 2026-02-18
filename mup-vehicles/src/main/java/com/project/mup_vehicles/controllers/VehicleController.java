@@ -45,4 +45,34 @@ public class VehicleController {
     public void delete(@PathVariable Long id) {
         service.deleteVehicle(id);
     }
+
+    @GetMapping("/{plate}/inspection")
+    public Boolean checkInspection(@PathVariable String plate) {
+        return service.getVehicleByPlate(plate).getInspectionValid();
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<Vehicle> getVehiclesByUser(@PathVariable Long userId) {
+        return service.getVehiclesByUser(userId);
+    }
+
+    @PutMapping("/{plate}/owner/{newUserId}")
+    public Vehicle transferOwnership(@PathVariable String plate, @PathVariable Long newUserId) {
+        return service.transferOwnership(plate, newUserId);
+    }
+
+    @GetMapping("/stats/registered")
+    public Long countRegistered() {
+        return service.countRegisteredVehicles();
+    }
+
+    @GetMapping("/expired-inspection")
+    public List<Vehicle> getExpiredInspectionVehicles() {
+        return service.getExpiredInspectionVehicles();
+    }
+    @PutMapping("/{plate}/renew-registration")
+    public Vehicle renewRegistration(@PathVariable String plate) {
+        return service.renewRegistration(plate);
+    }
+
 }

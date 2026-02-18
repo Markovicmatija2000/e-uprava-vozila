@@ -3,6 +3,8 @@ package com.project.mup_vehicles.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "vehicles")
 @NoArgsConstructor
@@ -30,6 +32,29 @@ public class Vehicle {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
+
+    private LocalDate registrationFrom;
+    private LocalDate registrationTo;
+    public boolean isRegistrationValid()
+    {
+        return registrationTo != null && registrationTo.isAfter(LocalDate.now());
+    }
+
+    public LocalDate getRegistrationFrom() {
+        return registrationFrom;
+    }
+
+    public void setRegistrationFrom(LocalDate registrationFrom) {
+        this.registrationFrom = registrationFrom;
+    }
+
+    public LocalDate getRegistrationTo() {
+        return registrationTo;
+    }
+
+    public void setRegistrationTo(LocalDate registrationTo) {
+        this.registrationTo = registrationTo;
+    }
 
     public String getPlateNumber() {
         return plateNumber;
