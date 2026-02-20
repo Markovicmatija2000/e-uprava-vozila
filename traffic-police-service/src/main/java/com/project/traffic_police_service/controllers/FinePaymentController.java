@@ -41,7 +41,6 @@ public class FinePaymentController {
         return service.updatePayment(id, updated);
     }
 
-
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.deletePayment(id);
@@ -52,5 +51,4 @@ public class FinePaymentController {
         // attach violation reference here
         return service.payFine(violationId,payment);
     }
-
 }

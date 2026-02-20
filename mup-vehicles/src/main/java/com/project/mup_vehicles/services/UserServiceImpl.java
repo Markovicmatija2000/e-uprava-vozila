@@ -47,4 +47,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
         repo.deleteById(id);
     }
+    @Override
+    public User getUserByJmbg(String jmbg) { return repo.findByJmbg(jmbg) .orElseThrow(() -> new RuntimeException("User not found with JMBG: " + jmbg)); }
 }

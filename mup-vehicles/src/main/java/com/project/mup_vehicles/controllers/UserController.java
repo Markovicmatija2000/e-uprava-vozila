@@ -39,4 +39,10 @@ public class UserController {
     public void delete(@PathVariable Long id) {
         service.deleteUser(id);
     }
+    @GetMapping("/jmbg/{jmbg}")
+    public User getUserByJmbg(@PathVariable String jmbg)
+    {
+
+        return service.getUserByJmbg(jmbg);
+    }
 }

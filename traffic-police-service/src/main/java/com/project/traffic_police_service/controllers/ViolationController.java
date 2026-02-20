@@ -1,6 +1,5 @@
 package com.project.traffic_police_service.controllers;
 
-
 import com.project.traffic_police_service.models.Violation;
 import com.project.traffic_police_service.services.ViolationService;
 import org.springframework.web.bind.annotation.*;
@@ -52,14 +51,11 @@ public class ViolationController {
         return service.getUnpaidViolations();
     }
 
-    // Register a violation (already covered by POST /traffic/violations)
-// but you can add a shortcut endpoint if needed
     @PostMapping("/register")
     public Violation registerViolation(@RequestBody Violation violation) {
         return service.createViolation(violation);
     }
 
-    // Get top offenders (drivers with most violations)
     @GetMapping("/stats/top-offenders")
     public List<String> getTopOffenders() {
         return service.getTopOffenders();

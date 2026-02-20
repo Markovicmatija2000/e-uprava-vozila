@@ -3,10 +3,12 @@ package com.project.traffic_police_service.services;
 
 import com.project.traffic_police_service.dto.FinePaymentRequestDTO;
 import com.project.traffic_police_service.dto.FinePaymentResponseDTO;
+import com.project.traffic_police_service.dto.UserDTO;
 import com.project.traffic_police_service.models.FinePayment;
 import com.project.traffic_police_service.models.Violation;
 import com.project.traffic_police_service.repositories.FinePaymentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -17,7 +19,8 @@ public class FinePaymentServiceImpl implements FinePaymentService {
     private final FinePaymentRepository repo;
     private final ViolationService violationService;
 
-    public FinePaymentServiceImpl(FinePaymentRepository repo, ViolationService violationService)
+
+    public FinePaymentServiceImpl(FinePaymentRepository repo, ViolationService violationService, VehicleClient vehicleClient)
     {
         this.repo = repo;
         this.violationService = violationService;
@@ -35,7 +38,8 @@ public class FinePaymentServiceImpl implements FinePaymentService {
     }
 
     @Override
-    public FinePayment createPayment(FinePayment payment) {
+    public FinePayment createPayment(FinePayment payment)
+    {
         return repo.save(payment);
     }
 

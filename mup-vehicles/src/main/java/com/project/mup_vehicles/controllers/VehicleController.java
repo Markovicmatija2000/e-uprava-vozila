@@ -1,6 +1,8 @@
 package com.project.mup_vehicles.controllers;
 
+import com.project.mup_vehicles.models.User;
 import com.project.mup_vehicles.models.Vehicle;
+import com.project.mup_vehicles.services.UserService;
 import com.project.mup_vehicles.services.VehicleService;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,9 +13,12 @@ import java.util.List;
 public class VehicleController {
 
     private final VehicleService service;
+    private final UserService userService;
 
-    public VehicleController(VehicleService service) {
+    public VehicleController(VehicleService service, UserService userService)
+    {
         this.service = service;
+        this.userService = userService;
     }
 
     @GetMapping
