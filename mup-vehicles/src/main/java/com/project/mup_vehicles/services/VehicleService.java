@@ -1,5 +1,6 @@
 package com.project.mup_vehicles.services;
 
+import com.project.mup_vehicles.dtos.VehicleWithViolationsDTO;
 import com.project.mup_vehicles.models.Vehicle;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface VehicleService {
     Long countRegisteredVehicles();
     List<Vehicle> getExpiredInspectionVehicles();
     Vehicle renewRegistration(String plateNumber);
-
+    VehicleWithViolationsDTO getVehicleWithOwnerViolations(String plate);
 }

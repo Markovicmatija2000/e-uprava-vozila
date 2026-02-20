@@ -1,5 +1,6 @@
 package com.project.mup_vehicles.controllers;
 
+import com.project.mup_vehicles.dtos.VehicleWithViolationsDTO;
 import com.project.mup_vehicles.models.User;
 import com.project.mup_vehicles.models.Vehicle;
 import com.project.mup_vehicles.services.UserService;
@@ -80,4 +81,9 @@ public class VehicleController {
         return service.renewRegistration(plate);
     }
 
+    @GetMapping("/{plate}/violations")
+    public VehicleWithViolationsDTO getVehicleWithOwnerViolations(@PathVariable String plate)
+    {
+        return service.getVehicleWithOwnerViolations(plate);
+    }
 }

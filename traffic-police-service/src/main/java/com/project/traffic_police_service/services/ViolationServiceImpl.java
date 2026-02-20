@@ -1,7 +1,11 @@
 package com.project.traffic_police_service.services;
 
+import com.project.traffic_police_service.dto.DriverProfileDTO;
+import com.project.traffic_police_service.dto.FinePaymentResponseDTO;
 import com.project.traffic_police_service.dto.UserDTO;
+import com.project.traffic_police_service.models.FinePayment;
 import com.project.traffic_police_service.models.Violation;
+import com.project.traffic_police_service.repositories.FinePaymentRepository;
 import com.project.traffic_police_service.repositories.ViolationRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +16,13 @@ public class ViolationServiceImpl implements ViolationService {
 
     private final ViolationRepository repo;
     private final VehicleClient vehicleClient;
+    private final FinePaymentRepository finePaymentRepo;
 
-    public ViolationServiceImpl(ViolationRepository repo,VehicleClient vehicleClient)
+    public ViolationServiceImpl(ViolationRepository repo,VehicleClient vehicleClient, FinePaymentRepository finePaymentRepository)
     {
         this.repo = repo;
         this.vehicleClient = vehicleClient;
+        this.finePaymentRepo = finePaymentRepository;
     }
 
     @Override
@@ -85,4 +91,26 @@ public class ViolationServiceImpl implements ViolationService {
                 .limit(5)
                 .toList();
     }
+    public DriverProfileDTO getDriverProfile(String jmbg) {
+        UserDTO driver = vehicleClient.getUserByJmbg(jmbg);
+        List<Violation> violations = repo.findByDriverJmbg(jmbg);
+        List<FinePayment> payments = finePaymentRepo.findByDriverJmbg(jmbg);
+        List<FinePaymentResponseDTO> paymentDTOs = payments.stream()
+                .map(fp ->
+                {
+                    FinePaymentResponseDTO dto = new FinePaymentResponseDTO();
+                    dto.setAmount(fp.getAmount());
+                    dto.setPaymentDate(fp.getPaymentDate());
+                    dto.setViolation(fp.getViolation());
+                    dto.setViolationPaid(fp.getViolation().getPaid());
+                    return dto;
+                })
+                .toList();
+
+        DriverProfileDTO dto = new DriverProfileDTO();
+        dto.setDriver(driver);
+        dto.setViolations(violations);
+        dto.setPayments(paymentDTOs);
+
+        return dto; }
 }

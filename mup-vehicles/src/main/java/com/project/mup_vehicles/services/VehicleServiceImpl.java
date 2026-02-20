@@ -1,5 +1,8 @@
 package com.project.mup_vehicles.services;
 
+import com.project.mup_vehicles.configs.TrafficPoliceClient;
+import com.project.mup_vehicles.dtos.VehicleWithViolationsDTO;
+import com.project.mup_vehicles.dtos.ViolationDTO;
 import com.project.mup_vehicles.models.User;
 import com.project.mup_vehicles.models.Vehicle;
 import com.project.mup_vehicles.repositories.UserRepository;
@@ -12,11 +15,13 @@ import java.util.List;
 public class VehicleServiceImpl implements VehicleService {
 
     private final VehicleRepository repo;
-    private final UserRepository userRepo; // needed for ownership transfer
+    private final UserRepository userRepo;
+    private final TrafficPoliceClient trafficPoliceClient;
 
-    public VehicleServiceImpl(VehicleRepository repo, UserRepository userRepo) {
+    public VehicleServiceImpl(VehicleRepository repo, UserRepository userRepo, TrafficPoliceClient trafficPoliceClient) {
         this.repo = repo;
         this.userRepo = userRepo;
+        this.trafficPoliceClient = trafficPoliceClient;
     }
 
     @Override
@@ -93,4 +98,15 @@ public class VehicleServiceImpl implements VehicleService {
         return repo.save(v);
     }
 
+    @Override
+    public VehicleWithViolationsDTO getVehicleWithOwnerViolations(String plate)
+    {
+        Vehicle vehicle = repo.findByPlateNumber(plate)
+            .orElseThrow(() -> new RuntimeException("Vehicle not found with plate: " + plate));
+        List<ViolationDTO> violations = trafficPoliceClient.getViolationsByDriverJmbg(vehicle.getOwner().getJmbg());
+        VehicleWithViolationsDTO dto = new VehicleWithViolationsDTO();
+        dto.setVehicle(vehicle); dto.setOwnerViolations(violations);
+
+        return dto;
+    }
 }

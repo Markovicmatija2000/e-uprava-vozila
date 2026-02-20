@@ -3,6 +3,7 @@ package com.project.traffic_police_service.controllers;
 import com.project.traffic_police_service.models.Violation;
 import com.project.traffic_police_service.services.ViolationService;
 import org.springframework.web.bind.annotation.*;
+import com.project.traffic_police_service.dto.DriverProfileDTO;
 
 import java.util.List;
 
@@ -59,5 +60,11 @@ public class ViolationController {
     @GetMapping("/stats/top-offenders")
     public List<String> getTopOffenders() {
         return service.getTopOffenders();
+    }
+
+    @GetMapping("/full/driver/{jmbg}")
+    public DriverProfileDTO getDriverProfile(@PathVariable String jmbg)
+    {
+        return service.getDriverProfile(jmbg);
     }
 }
