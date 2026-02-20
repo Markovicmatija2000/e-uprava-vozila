@@ -1,0 +1,127 @@
+{
+  "info": {
+    "name": "Traffic Service API",
+    "description": "CRUD + extra endpoints for TrafficViolation and FinePayment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Traffic Violations",
+      "item": [
+        {
+          "name": "Get All Violations",
+          "request": { "method": "GET", "url": "http://localhost:8080/traffic/violations" }
+        },
+        {
+          "name": "Get Violation By ID",
+          "request": { "method": "GET", "url": "http://localhost:8080/traffic/violations/1" }
+        },
+        {
+          "name": "Create Violation",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "http://localhost:8080/traffic/violations",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Speeding\",\n  \"date\": \"2026-02-18\",\n  \"fineAmount\": 100.0,\n  \"paid\": false,\n  \"driverJmbg\": \"1234567890123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Violation",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "http://localhost:8080/traffic/violations/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"Parking\",\n  \"date\": \"2026-02-18\",\n  \"fineAmount\": 50.0,\n  \"paid\": false,\n  \"driverJmbg\": \"1234567890123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Violation",
+          "request": { "method": "DELETE", "url": "http://localhost:8080/traffic/violations/1" }
+        },
+        {
+          "name": "Get Violations By Driver JMBG",
+          "request": { "method": "GET", "url": "http://localhost:8080/traffic/violations/driver/1234567890123" }
+        },
+        {
+          "name": "Get Unpaid Violations",
+          "request": { "method": "GET", "url": "http://localhost:8080/traffic/violations/unpaid" }
+        },
+        {
+          "name": "Register Violation (Shortcut)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "http://localhost:8080/traffic/violations/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"DUI\",\n  \"date\": \"2026-02-18\",\n  \"fineAmount\": 500.0,\n  \"paid\": false,\n  \"driverJmbg\": \"2234567890123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Top Offenders",
+          "request": { "method": "GET", "url": "http://localhost:8080/traffic/violations/stats/top-offenders" }
+        }
+      ]
+    },
+    {
+      "name": "Fine Payments",
+      "item": [
+        {
+          "name": "Get All Payments",
+          "request": { "method": "GET", "url": "http://localhost:8080/traffic/payments" }
+        },
+        {
+          "name": "Get Payment By ID",
+          "request": { "method": "GET", "url": "http://localhost:8080/traffic/payments/1" }
+        },
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "http://localhost:8080/traffic/payments",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100.0,\n  \"paymentDate\": \"2026-02-18\",\n  \"violation\": { \"id\": 1 }\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Payment",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "http://localhost:8080/traffic/payments/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 120.0,\n  \"paymentDate\": \"2026-02-19\",\n  \"violation\": { \"id\": 1 }\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Payment",
+          "request": { "method": "DELETE", "url": "http://localhost:8080/traffic/payments/1" }
+        },
+        {
+          "name": "Pay Fine",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "http://localhost:8080/traffic/payments/pay/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 100.0\n}"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
