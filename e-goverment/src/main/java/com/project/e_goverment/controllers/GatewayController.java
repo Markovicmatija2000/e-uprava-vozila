@@ -1,5 +1,9 @@
 package com.project.e_goverment.controllers;
 
+import com.project.e_goverment.dtos.LoginRequest;
+import com.project.e_goverment.configs.JwtUtil;
+import com.project.e_goverment.models.User;
+import com.project.e_goverment.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -7,12 +11,29 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/gateway")
 public class GatewayController {
 
     private final RestTemplate restTemplate = new RestTemplate();
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
+    public GatewayController(UserService userService, JwtUtil jwtUtil)
+    { this.userService = userService; this.jwtUtil = jwtUtil; }
+
+    @PostMapping("/auth/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+
+        Optional<User> user = userService.isValid(request.getEmail(), request.getPassword());
+        if (user.isPresent()) {
+            String token = jwtUtil.generateToken(request.getEmail(), user.get().getRole().toString());
+            return ResponseEntity.ok(Map.of("token", token));
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
 
     @RequestMapping("/traffic/**")
     public ResponseEntity<?> forwardTraffic(HttpServletRequest request,
@@ -23,7 +44,7 @@ public class GatewayController {
     @RequestMapping("/vehicles/**")
     public ResponseEntity<?> forwardVehicles(HttpServletRequest request,
                                              @RequestBody(required = false) String body) {
-        return forwardRequest(request, body, "http://mup-vehicles:8082");
+        return forwardRequest(request, body, "http://localhost:8082");
     }
 
     @RequestMapping("/users/**")

@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class UserDTO {
-    private Long id;
     private String name;
     private String surname;
     private String address;
@@ -14,13 +13,6 @@ public class UserDTO {
     private String role;     // map enum Role to string
     private Boolean deleted;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

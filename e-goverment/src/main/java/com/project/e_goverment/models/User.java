@@ -1,8 +1,7 @@
-package com.project.mup_vehicles.models;
+package com.project.e_goverment.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 
 @Entity
 @Table(name = "users")
@@ -33,7 +32,6 @@ public class User {
     private Role role;
     private Boolean deleted;
     private String password;
-
 
     public String getName() {
         return name;
@@ -107,3 +105,4 @@ public class User {
         this.password = password;
     }
 }
+
